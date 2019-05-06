@@ -4,7 +4,7 @@
 \alias{tdee}
 \title{A TDEE calculator for R.}
 \usage{
-tdee(height, weight, age, sex, activity, aim)
+tdee(height, weight, age, sex, activity, aim, goal = NULL)
 }
 \arguments{
 \item{height}{Your height in centimetres. Returns a warning message to check unit of measurement if over 250 or under 100.}
@@ -18,12 +18,14 @@ tdee(height, weight, age, sex, activity, aim)
 \item{activity}{Your activity level. Are you 'sedentary', or 'lightly', 'moderately', 'very' or 'extremely' active? Throws an error if not one of these options (do not include the word 'active', just the adverbs).}
 
 \item{aim}{Your weight aim. Do you want to 'lose', 'maintain', or 'gain' weight? Throws an error if not one of these options}
+
+\item{goal}{An optional argument specifying a goal weight. If specified, `tdee` runs calculations at each weight between your current and goal weight to show how calorie consumption needs to be adapted over time.}
 }
 \value{
-A dataframe with columns bmr, tdee, and calories
+A dataframe with columns weight, bmr, tdee, and calories
 }
 \description{
-Calculate your basal metabolic rate (BMR), total daily energy expenditure (TDEE), and calorie goals to lose, maintain, or gain weight.
+Calculate your basal metabolic rate (BMR), total daily energy expenditure (TDEE), and calorie goals to lose, maintain, or gain weight. Also calculate adjusted values for every kg interval between your current and goal weight.
 }
 \details{
 \code{tdee} calculates your BMR, TDEE, and calorie requirements based on your height, weight, age, sex, activity levels and weight aims. The calculations are based on this post: https://steelfitusa.com/2018/10/calculate-tdee/
@@ -35,9 +37,10 @@ tdee(height = 182,
      age = 23,
      sex = "male",
      activity = "moderately",
-     aim = "gain")
+     aim = "gain",
+     goal = "89")
 # alternatively without arg names
-tdee(182, 84, 23, "male", "moderately", "gain")
+tdee(182, 84, 23, "male", "moderately", "gain", 89)
 # a 150 cm, thirty-year-old woman weighing ninety kilograms, who is
 # sedentary and wants to lose weight
 tdee(height = 150,
@@ -46,4 +49,10 @@ tdee(height = 150,
      sex = "female",
      activity = "sedentary",
      aim = "lose")
+# plot adjustments towards goal weight
+tdee_track <- tdee(182, 84, 23, "male", "moderately", "gain", 89)
+ggplot(tdee_track, mapping = aes(x = weight, y = calories)) +
+  geom_line() +
+  geom_point()
+
 }
