@@ -11,7 +11,7 @@
 #' @details \code{tdee} calculates your BMR, TDEE, and calorie requirements based on your height, weight, age, sex, activity levels and weight aims. The calculations are based on this post: https://steelfitusa.com/2018/10/calculate-tdee/
 #' @import tidyverse
 #' @export
-#' @examples 
+#' @examples
 #' # my own calculation
 #' tdee(height = 182,
 #'      weight = 84,
@@ -37,7 +37,7 @@ tdee <- function(height,
                  sex,
                  activity,
                  aim) {
-  
+
   if(height >= 250 | height <= 100) {
     warning("Make sure you have input your height in cm")
   }
@@ -59,16 +59,16 @@ tdee <- function(height,
     stop("Aim must be one of: 'gain', 'maintain' or 'lose'")
   }
   #calculate basal metabolic rate
-  bmr <- case_when(
+  bmr <- dplyr::case_when(
     sex == "female" ~
       655 + 9.6*weight + 1.8*height - 4.7*age,
     sex == "male" ~
       66 + 13.7*weight + 5*height - 6.8*age,
     TRUE ~ 0
   )
-  
+
   #calculate total daily energy expenditure
-  tdee <- case_when(
+  tdee <- dplyr::case_when(
     activity == "sedentary" ~ floor(bmr*1.2),
     activity == "lightly" ~ floor(bmr*1.375),
     activity == "moderately" ~ floor(bmr*1.55),
@@ -76,15 +76,15 @@ tdee <- function(height,
     activity == "extremely" ~ floor(bmr*1.9),
     TRUE ~ 0
   )
-  
+
   #calculate calorie goals
-  calories <- case_when(
+  calories <- dplyr::case_when(
     aim == "gain" ~ tdee + 300,
     aim == "lose" ~ floor(tdee*0.8),
     aim == "maintain" ~ tdee,
     TRUE ~ 0
   )
-  
+
   #dataframe of results
   data.frame(bmr, tdee, calories)
 }
