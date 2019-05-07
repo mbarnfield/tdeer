@@ -20,7 +20,7 @@
 #'      sex = "male",
 #'      activity = "moderately",
 #'      aim = "gain",
-#'      goal = "89")
+#'      goal = 89)
 #' # alternatively without arg names
 #' tdee(182, 84, 23, "male", "moderately", "gain", 89)
 #' # a 150 cm, thirty-year-old woman weighing ninety kilograms, who is
