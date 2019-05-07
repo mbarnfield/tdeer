@@ -68,13 +68,13 @@ tdee <- function(height,
     stop("Aim must be one of: 'gain', 'maintain' or 'lose'")
   }
   if(!is.null(goal) & aim != "gain" & aim != "lose") {
-    stop("Cannot set goal weight if aim is not 'gain' or 'lose")
+    stop("Cannot set goal weight if aim is not 'gain' or 'lose'")
   }
   if(aim == "gain" & goal <= weight) {
     stop("Goal weight must be larger than current weight if aim is to 'gain'")
   }
   if(aim == "lose" & goal >= weight) {
-    stop("Goal weight must be lower than current weight if aim is to 'lose")
+    stop("Goal weight must be lower than current weight if aim is to 'lose'")
   }
 
   if(is.null(goal)) {
